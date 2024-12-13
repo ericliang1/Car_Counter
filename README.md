@@ -1,4 +1,4 @@
-# Television Detector
+   # Television Detector
 
 **Television Detector** is a television detection model created using yolov8 and the coco dataset.
 
@@ -45,6 +45,9 @@ To detect televisions in images:
 ```bash
 python predicter.py
 ```
+
+3. Obtain predictions in runs/detect
+
 ---
 
 To detect televisions using a video camera in real-time:
@@ -54,6 +57,7 @@ To detect televisions using a video camera in real-time:
 ```bash
 streamlit run realtime_detector.py
 ```
+
 ---
 
 
