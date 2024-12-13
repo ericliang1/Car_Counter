@@ -21,6 +21,12 @@ Before using the project, ensure you have the following:
 - opencv
 - streamlit
 
+Install required libraries with:
+
+```bash
+   pip install -r requirements.txt
+   ```
+
 ---
 
 ## Setup
