@@ -1,7 +1,7 @@
-coco_converted
+coco_converted/
 
-coco_converted2
+coco_converted2/
 
-dataset
+dataset/
 
-yolov8n
+yolov8n.pt
