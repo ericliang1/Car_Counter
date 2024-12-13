@@ -2,25 +2,6 @@ from ultralytics.data.converter import convert_coco
 import os
 import shutil
 
-convert_coco(  
-    labels_dir="../../../fiftyone/coco-2017/train",
-    use_segments=False,
-    use_keypoints=False,
-    cls91to80=True,
-)
-
-convert_coco(  
-    labels_dir="../../../fiftyone/coco-2017/validation",
-    use_segments=False,
-    use_keypoints=False,
-    cls91to80=True,
-)
-
-os.makedirs("dataset/images/train", exist_ok=True)
-os.makedirs("dataset/images/validation", exist_ok=True)
-os.makedirs("dataset/labels/train", exist_ok=True)
-os.makedirs("dataset/labels/validation", exist_ok=True)
-
 train_images_path = "../../../fiftyone/coco-2017/train/data"
 train_labels_path = "coco_converted/labels/labels"
 validation_images_path = "../../../fiftyone/coco-2017/validation/data"
@@ -29,6 +10,27 @@ new_train_images_path = "dataset/images/train"
 new_train_labels_path = "dataset/labels/train"  
 new_validation_images_path = "dataset/images/validation"      
 new_validation_labels_path = "dataset/labels/validation"
+
+def convert_files():
+    convert_coco(  
+        labels_dir="../../../fiftyone/coco-2017/train",
+        use_segments=False,
+        use_keypoints=False,
+        cls91to80=True,
+    )
+
+    convert_coco(  
+        labels_dir="../../../fiftyone/coco-2017/validation",
+        use_segments=False,
+        use_keypoints=False,
+        cls91to80=True,
+    )
+
+def make_directories():
+    os.makedirs("dataset/images/train", exist_ok=True)
+    os.makedirs("dataset/images/validation", exist_ok=True)
+    os.makedirs("dataset/labels/train", exist_ok=True)
+    os.makedirs("dataset/labels/validation", exist_ok=True)
 
 def convert_label(path):
     for label_file in os.listdir(path):
@@ -44,19 +46,23 @@ def convert_label(path):
 
             with open(file_path, "w") as file:
                 file.write("\n".join(new))
+def move_data():
+    for file in os.listdir(train_images_path):
+        shutil.copy(os.path.join(train_images_path, file), new_train_images_path)
 
-for file in os.listdir(train_images_path):
-    shutil.copy(os.path.join(train_images_path, file), new_train_images_path)
+    for file in os.listdir(train_labels_path):
+        shutil.copy(os.path.join(train_labels_path, file), new_train_labels_path)
 
-for file in os.listdir(train_labels_path):
-    shutil.copy(os.path.join(train_labels_path, file), new_train_labels_path)
+    for file in os.listdir(validation_images_path):
+        shutil.copy(os.path.join(validation_images_path, file), new_validation_images_path)
 
-for file in os.listdir(validation_images_path):
-    shutil.copy(os.path.join(validation_images_path, file), new_validation_images_path)
+    for file in os.listdir(validation_labels_path):
+        shutil.copy(os.path.join(validation_labels_path, file), new_validation_labels_path)
 
-for file in os.listdir(validation_labels_path):
-    shutil.copy(os.path.join(validation_labels_path, file), new_validation_labels_path)
-
-convert_label(new_train_labels_path)
-convert_label(new_validation_labels_path)
+if __name__ == "__main__":
+    convert_files()
+    make_directories()
+    move_data()
+    convert_label(new_train_labels_path)
+    convert_label(new_validation_labels_path)
 
