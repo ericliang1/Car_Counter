@@ -14,7 +14,7 @@ def inference():
 
     webcam = 0  
 
-    model = YOLO("runs/detect/train4/weights/best.pt")  
+    model = YOLO("runs/detect/train6/weights/best.pt")  
     class_names = list(model.names.values())
 
     selected_classes = ["television"]
@@ -22,7 +22,7 @@ def inference():
 
     #set minimum detection thresholds
 
-    conf = 0.25  
+    conf = 0.7  
     iou = 0.45
 
     #create video boxes
