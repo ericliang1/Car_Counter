@@ -47,7 +47,7 @@ def convert_label(path):
             with open(file_path, "r") as file:
                 for line in file:
                     parts = line.strip().split()
-                    if len(parts) > 0 and parts[0] == "62": 
+                    if len(parts) > 0 and parts[0] == "2": 
                         parts[0] = "0" 
                         new.append(" ".join(parts))
 
