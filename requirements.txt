@@ -5,3 +5,4 @@ fiftyone_db==1.1.7
 opencv_python==4.10.0.84
 opencv_python_headless==4.10.0.84
 ultralytics==8.3.42
+torch==2.5.1
