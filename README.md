@@ -41,28 +41,3 @@ Install required libraries with:
 ## Usage
 
 ### Run the Project
-
-To count cars in a video:
-
-1. Upload image files to the test_images folder
-2. Run predicter.py in terminal using:
-   
-```bash
-python predicter.py
-```
-
-3. Obtain predictions in runs/detect
-
----
-
-To detect televisions using a video camera in real-time:
-
-1. Run realtime_detector.py in terminal using:
-   
-```bash
-streamlit run realtime_detector.py
-```
-
----
-
-
