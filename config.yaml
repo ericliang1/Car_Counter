@@ -3,3 +3,4 @@ train: dataset/images/train
 val: dataset/images/validation
 names: 
   0: car
+  1: truck

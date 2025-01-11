@@ -50,6 +50,9 @@ def convert_label(path):
                     if len(parts) > 0 and parts[0] == "2": 
                         parts[0] = "0" 
                         new.append(" ".join(parts))
+                    if len(parts) > 0 and parts[0] == "7": 
+                        parts[0] = "1" 
+                        new.append(" ".join(parts))
 
             with open(file_path, "w") as file:
                 file.write("\n".join(new))
