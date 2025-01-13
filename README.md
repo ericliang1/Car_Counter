@@ -60,6 +60,8 @@ streamlit run tracker.py
 
 ![](https://github.com/ericliang1/Car_Counter/blob/main/output_cars.gif)
 
+![](https://github.com/ericliang1/Car_Counter/blob/main/output_cars2.gif)
+
 ---
 
 
