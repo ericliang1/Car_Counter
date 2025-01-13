@@ -4,12 +4,12 @@ from ultralytics import YOLO
 from deep_sort_realtime.deepsort_tracker import DeepSort
 import os
 
-def car_counter_streamlit():
-    st.set_page_config(page_title="Car and Truck Counter", layout="wide")
+def car_counter():
+    st.set_page_config(page_title="Car Counter", layout="wide")
 
     # YOLO model setup
-    model = YOLO("runs/detect/train10/weights/best.pt")
-    tracker = DeepSort(max_age=20, nn_budget=70, max_iou_distance=0.8)
+    model = YOLO("runs/detect/train19/weights/best.pt")
+    tracker = DeepSort(max_age=20, nn_budget=70, max_iou_distance=0.9)
 
     # File uploader
     uploaded_video = st.file_uploader("Upload a video", type=["mp4", "avi", "mov"])
@@ -27,7 +27,7 @@ def car_counter_streamlit():
             st.error("Uploaded video cannot be opened.")
             return
 
-        # Retrieve video properties
+        # Configure video settings
         width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         fps = int(cap.get(cv2.CAP_PROP_FPS))
@@ -38,12 +38,12 @@ def car_counter_streamlit():
         fourcc = cv2.VideoWriter_fourcc(*"mp4v")
         out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
 
-        # Initialize counters
+        # Initialize trackers
         unique_ids = set()
 
         # Set Parameters
-        detection_threshold = 0.65
-        iou_threshold = 0.8
+        detection_threshold = 0.8
+        iou_threshold = 0.9
 
         # Initialize progress bar
         progress_bar = st.progress(0)
@@ -57,35 +57,22 @@ def car_counter_streamlit():
 
             # Predict Objects
             results = model.predict(frame, conf=detection_threshold, iou=iou_threshold)
-            names = results[0].names
-
-            # Filter for cars and trucks
-            filtered_boxes = []
-            for box in results[0].boxes:
-                cls_id = int(box.cls[0])
-                cls_name = names[cls_id]
-                if cls_name in ["car", "truck"]:  # Treat both as cars
-                    filtered_boxes.append(box)
 
             # Create Detections
             detections = [
-                (
-                    [
-                        fb.xyxy[0][0],
-                        fb.xyxy[0][1],
-                        fb.xyxy[0][2] - fb.xyxy[0][0],
-                        fb.xyxy[0][3] - fb.xyxy[0][1],
-                    ],
-                    1.0,
-                    0
-                )
-                for fb in filtered_boxes
+                ([box.xyxy[0][0].cpu().item(),  # x1
+                  box.xyxy[0][1].cpu().item(),  # y1
+                  (box.xyxy[0][2] - box.xyxy[0][0]).cpu().item(),  # width
+                  (box.xyxy[0][3] - box.xyxy[0][1]).cpu().item()],  # height
+                 box.conf[0].cpu().item(),  # confidence score
+                 0)  # class ID (modify if needed)
+                for box in results[0].boxes
             ]
 
             # Update DeepSort tracker
             tracks = tracker.update_tracks(detections, frame=frame)
 
-            # Current IDs in frame
+            # Get current IDS
             current_ids = set()
             for track in tracks:
                 if not track.is_confirmed():
@@ -135,22 +122,31 @@ def car_counter_streamlit():
         cap.release()
         out.release()
 
-        # Accuracy calculation
+        # Calculate Accuracy
         if actual_car_count > 0:
             accuracy = (len(unique_ids) / actual_car_count) * 100
             accuracy_message = f"Accuracy: {accuracy:.2f}%"
         else:
-            accuracy_message = "Actual car count not provided or is zero. Cannot calculate accuracy."
+            accuracy_message = "Error: Cannot calculate accuracy."
 
-        # Inform user where the video is saved and show accuracy
+        # Video save message
         st.success("Video processing complete!")
         st.write(f"Processed video saved to `{output_path}` in the current folder.")
         st.write(f"Total Cars Detected: {len(unique_ids)}")
         st.write(accuracy_message)
 
-        # Optionally cleanup input file
+        # Provide video for download
+        with open(output_path, "rb") as video_file:
+            st.download_button(
+                label="Download Processed Video",
+                data=video_file,
+                file_name=output_path,
+                mime="video/mp4",
+            )
+
+        # Cleanup input file
         if os.path.exists(input_path):
             os.remove(input_path)
 
 if __name__ == "__main__":
-    car_counter_streamlit()
+    car_counter()

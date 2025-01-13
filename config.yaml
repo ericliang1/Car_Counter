@@ -1,4 +1,4 @@
-path: C:\Users\Eric.Jinchen.Liang\OneDrive\Documents\Car_Counter
+path: /home/eric/Documents/Car_Counter
 train: dataset/images/train
 val: dataset/images/validation
 names: 

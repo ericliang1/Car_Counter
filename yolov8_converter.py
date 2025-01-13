@@ -3,9 +3,9 @@ import os
 import shutil
 
 #define paths
-TRAIN_IMAGES_PATH = "C:/Users/Eric.Jinchen.Liang/fiftyone/coco-2017/train/data"
+TRAIN_IMAGES_PATH = "/home/eric/fiftyone/coco-2017/train/data"
 TRAIN_LABELS_PATH = "coco_converted/labels/labels"
-VALIDATION_IMAGES_PATH = "C:/Users/Eric.Jinchen.Liang/fiftyone/coco-2017/validation/data"
+VALIDATION_IMAGES_PATH = "/home/eric/fiftyone/coco-2017/validation/data"
 VALIDATION_LABELS_PATH = "coco_converted2/labels/labels"
 NEW_TRAIN_IMAGES_PATH = "dataset/images/train"
 NEW_TRAIN_LABELS_PATH = "dataset/labels/train"
@@ -16,14 +16,14 @@ NEW_VALIDATION_LABELS_PATH = "dataset/labels/validation"
 #convert labels from coco format to yolo format
 def convert_files():
     convert_coco(  
-        labels_dir="../../../fiftyone/coco-2017/train",
+        labels_dir="/home/eric/fiftyone/coco-2017/train",
         use_segments=False,
         use_keypoints=False,
         cls91to80=True,
     )
 
     convert_coco(  
-        labels_dir="../../../fiftyone/coco-2017/validation",
+        labels_dir="/home/eric/fiftyone/coco-2017/validation",
         use_segments=False,
         use_keypoints=False,
         cls91to80=True,
