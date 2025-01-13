@@ -1,13 +1,12 @@
-   # Television Detector
+  # Car Counter
 
-**Television Detector** is a television detection model created using yolov8 and the coco dataset.
+**Car Counter** is a car tracking model created using yolov8, the coco dataset, and deepsort
 
 ---
 
 ## Features
 
-- Detecting televisions in images
-- Detecting televisions using a video camera in real-time
+- Counting total number of cars in a video
 
 ---
 
@@ -17,9 +16,9 @@ Before using the project, ensure you have the following:
 
 - python
 - ultralytics
-- pytorch
+- deepsort
 - opencv
-- streamlit
+- pytorch
 
 Install required libraries with:
 
@@ -34,8 +33,8 @@ Install required libraries with:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/ericliang1/Television_Detector.git
-   cd Television_Detector
+   git clone https://github.com/ericliang1/Car_Counter.git
+   cd Car_Counter
    ```
 ---
 
@@ -43,27 +42,18 @@ Install required libraries with:
 
 ### Run the Project
 
-To detect televisions in images:
+To count cars in a video:
 
-1. Upload image files to the test_images folder
-2. Run predicter.py in terminal using:
-   
+1. Run the streamlit app in terminal using:
+
 ```bash
-python predicter.py
+streamlit run tracker.py
 ```
 
-3. Obtain predictions in runs/detect
+2. Upload the video to the file uploader and enter the number of actual cars in the video in the box
 
----
-
-To detect televisions using a video camera in real-time:
-
-1. Run realtime_detector.py in terminal using:
+3. Obtain annotated video and accuracy metric after progress bar has loaded
    
-```bash
-streamlit run realtime_detector.py
-```
-
 ---
 
 
